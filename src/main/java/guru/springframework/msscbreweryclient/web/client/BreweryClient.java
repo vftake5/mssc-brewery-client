@@ -66,15 +66,12 @@ public class BreweryClient
 
 	public void updateBeerByIdW(UUID beerId, BeerDto beerDto)
 	{
-//		restTemplate.put(apihost + BEER_PATH_V1, beerDto);
 		webClient.put().uri(beerId.toString()).body(Mono.just(beerDto), BeerDto.class);
-
 	}
 
 	public void updateBeerById(UUID beerId, BeerDto beerDto)
 	{
 		restTemplate.put(apihost + BEER_PATH_V1 + beerId, beerDto);
-
 	}
 
 	public void deleteBeerW(UUID beerId)
@@ -86,4 +83,5 @@ public class BreweryClient
 	{
 		restTemplate.delete(apihost + BEER_PATH_V1 + beerId);
 	}
+
 }

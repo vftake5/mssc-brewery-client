@@ -1,4 +1,10 @@
 sfg:
   brewery:
     apihost: http://localhost:8080
+    customerV1: /api/v1/customer/
+    namePath: /name/
+    savePath: /savecust
+    updatePath: /update/
+    deletePath: /delete/
+
 
