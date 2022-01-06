@@ -10,6 +10,8 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+// Akkor kerül használatba, ha visszaállítom a Component állapotát
+
 //@Component
 public class BlockingRestTemplateCustomizer implements RestTemplateCustomizer
 {
