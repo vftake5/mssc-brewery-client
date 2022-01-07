@@ -15,6 +15,9 @@ import java.util.UUID;
 @Setter
 public class CustomerClient
 {
+// Ezek a változók a modul confing yml file-ból töltődnek. A "@ConfigurationProperties" meghatározta, hogy mi a prefix,
+//	a property file-ban pedig ugyanezen a néven szerepelnek. Feltöltésükhöz szükséges minden változóhoz a "Setter" eljárás,
+//  ezt a Lombok "@Setter" annotációval valósítottam meg.
 
 	private String apihost;
 	private String customerV1;

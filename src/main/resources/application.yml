@@ -6,5 +6,15 @@ sfg:
     savePath: /savecust
     updatePath: /update/
     deletePath: /delete/
+  resttemplate:
+    maxTotal: 100
+    defaultMaxPerRoute: 20
+    requestTimeout: 3000
+    socketTimeout: 3000
 
 
+logging:
+  level:
+    org:
+      apache:
+        http: info
