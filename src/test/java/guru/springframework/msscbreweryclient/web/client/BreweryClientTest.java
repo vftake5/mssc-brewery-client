@@ -4,7 +4,9 @@ import guru.springframework.msscbreweryclient.web.model.BeerDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.net.URI;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,6 +38,7 @@ class BreweryClientTest
 	@Test
 	void saveNewBeer()
 	{
+//		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").upc(1L).build();
 		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").build();
 
 		UUID uri = breweryClient.saveNewBeer(beerDto);
@@ -48,19 +51,32 @@ class BreweryClientTest
 	@Test
 	void saveNewBeerW()
 	{
-		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").build();
+		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").upc(1L).build();
+//		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").build();
 
-		UUID uri = breweryClient.saveNewBeerW(beerDto);
+		try
+		{
+			URI uri = breweryClient.saveNewBeerW(beerDto);
 
-		assertNotNull(uri);
+			assertNotNull(uri);
 
-		System.out.println(uri);
+			System.out.println(uri);
+		}
+		catch (WebClientResponseException er)
+		{
+			System.out.println(er.getResponseBodyAsString());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 	@Test
 	void updateBeerById()
 	{
-		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").build();
+		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").upc(1L).build();
 
 		breweryClient.updateBeerById(beerDto.getId(), beerDto);
 
@@ -69,7 +85,7 @@ class BreweryClientTest
 	@Test
 	void updateBeerByIdW()
 	{
-		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").build();
+		BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New beer").upc(1L).build();
 
 		breweryClient.updateBeerByIdW(beerDto.getId(), beerDto);
 
