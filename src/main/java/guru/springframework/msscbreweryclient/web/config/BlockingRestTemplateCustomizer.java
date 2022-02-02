@@ -1,12 +1,11 @@
 package guru.springframework.msscbreweryclient.web.config;
 
-import lombok.Setter;
+import guru.springframework.msscbreweryclient.web.properties.RestProperties;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -16,25 +15,26 @@ import org.springframework.web.client.RestTemplate;
 // Akkor kerül használatba, ha visszaállítom a Component állapotát
 
 @Component
-@ConfigurationProperties(prefix = "sfg.resttemplate")
-@Setter
 public class BlockingRestTemplateCustomizer implements RestTemplateCustomizer
 {
-	private int maxTotal;
-	private int defaultMaxPerRoute;
-	private int requestTimeout;
-	private int socketTimeout;
+
+	private final RestProperties properties;
+
+	public BlockingRestTemplateCustomizer(RestProperties properties)
+	{
+		this.properties = properties;
+	}
 
 	public ClientHttpRequestFactory clientHttpRequestFactory()
 	{
 		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-		connectionManager.setMaxTotal(maxTotal);
-		connectionManager.setDefaultMaxPerRoute(defaultMaxPerRoute);
+		connectionManager.setMaxTotal(properties.maxTotal());
+		connectionManager.setDefaultMaxPerRoute(properties.defaultMaxPerRoute());
 
 		RequestConfig requestConfig = RequestConfig
 			.custom()
-			.setConnectionRequestTimeout(requestTimeout)
-			.setSocketTimeout(socketTimeout)
+			.setConnectionRequestTimeout(properties.requestTimeout())
+			.setSocketTimeout(properties.socketTimeout())
 			.build();
 
 		CloseableHttpClient httpClient = HttpClients

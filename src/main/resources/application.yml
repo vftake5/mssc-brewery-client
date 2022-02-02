@@ -12,7 +12,6 @@ sfg:
     requestTimeout: 3000
     socketTimeout: 3000
 
-
 logging:
   level:
     org:

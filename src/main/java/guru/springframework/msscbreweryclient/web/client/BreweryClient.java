@@ -1,9 +1,9 @@
 package guru.springframework.msscbreweryclient.web.client;
 
 import guru.springframework.msscbreweryclient.web.model.BeerDto;
+import guru.springframework.msscbreweryclient.web.properties.ServiceProperties;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -21,16 +21,19 @@ public class BreweryClient
 {
 	public final String BEER_PATH_V1 = "/api/v1/beer/";
 
-	@Value("${sfg.brewery.apihost}")
-	private String apihost;
+//	@Value("${sfg.brewery.apihost}")
+//	private String apihost;
 
 	private final RestTemplate restTemplate;
+	public final ServiceProperties properties;
 	private WebClient webClient;
 
 	@Autowired
-	public BreweryClient(RestTemplateBuilder restTemplateBuilder)
+	public BreweryClient(RestTemplateBuilder restTemplateBuilder, ServiceProperties properties)
 	{
+		this.properties = properties;
 		this.restTemplate = restTemplateBuilder.build();
+
 
 //		this.webClient = WebClient.builder().baseUrl(apihost + BEER_PATH_V1).build();
 	}
@@ -38,7 +41,7 @@ public class BreweryClient
 	@PostConstruct
 	private void init()
 	{
-		this.webClient = WebClient.builder().baseUrl(apihost + BEER_PATH_V1).build();
+		this.webClient = WebClient.builder().baseUrl(properties.apihost() + BEER_PATH_V1).build();
 	}
 
 	public BeerDto getBeerByIdW(UUID beerId)
@@ -53,7 +56,7 @@ public class BreweryClient
 
 	public BeerDto getBeerById(UUID beerId)
 	{
-		return restTemplate.getForObject(apihost + BEER_PATH_V1 + beerId, BeerDto.class);
+		return restTemplate.getForObject(properties.apihost() + BEER_PATH_V1 + beerId, BeerDto.class);
 	}
 
 	/**
@@ -102,7 +105,7 @@ public class BreweryClient
 
 	public UUID saveNewBeer(BeerDto beerDto)
 	{
-		return restTemplate.postForObject(apihost + BEER_PATH_V1, beerDto, UUID.class);
+		return restTemplate.postForObject(properties.apihost() + BEER_PATH_V1, beerDto, UUID.class);
 	}
 
 	public void updateBeerByIdW(UUID beerId, BeerDto beerDto)
@@ -112,7 +115,7 @@ public class BreweryClient
 
 	public void updateBeerById(UUID beerId, BeerDto beerDto)
 	{
-		restTemplate.put(apihost + BEER_PATH_V1 + beerId, beerDto);
+		restTemplate.put(properties.apihost() + BEER_PATH_V1 + beerId, beerDto);
 	}
 
 	public void deleteBeerW(UUID beerId)
@@ -122,7 +125,7 @@ public class BreweryClient
 
 	public void deleteBeer(UUID beerId)
 	{
-		restTemplate.delete(apihost + BEER_PATH_V1 + beerId);
+		restTemplate.delete(properties.apihost() + BEER_PATH_V1 + beerId);
 	}
 
 }
